@@ -1,0 +1,114 @@
+@page
+@model RecipeApp.Pages.Recipes.IndexModel
+
+@{
+    ViewData["Title"] = "Recipes";
+}
+
+<h1>Recipes</h1>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <form>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" asp-for="SearchString" placeholder="Search recipes..." />
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" asp-for="CategoryId" asp-items="Model.Categories">
+                        <option value="">-- All Categories --</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" asp-for="SortOrder">
+                        <option value="">-- Sort By Name (A-Z) --</option>
+                        <option value="name_desc">Name (Z-A)</option>
+                        <option value="Date">Date Added (Oldest)</option>
+                        <option value="date_desc">Date Added (Newest)</option>
+                        <option value="Category">Category (A-Z)</option>
+                        <option value="category_desc">Category (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" asp-for="IngredientSearch" 
+                               placeholder="Search by ingredients (comma separated)..." />
+                        <button type="submit" class="btn btn-outline-secondary">
+                            Find Recipes
+                        </button>
+                    </div>
+                    <small class="form-text text-muted">
+                        Enter ingredients you have, separated by commas (e.g., chicken, garlic, tomatoes)
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<p>
+    <a asp-page="Create" class="btn btn-success">Create New Recipe</a>
+</p>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model.Recipes)
+    {
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <span class="badge bg-primary">@item.Category.Name</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Prep Time:</span> 
+                            <span>@item.PreparationTimeMinutes min</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Cooking Time:</span> 
+                            <span>@item.CookingTimeMinutes min</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Servings:</span> 
+                            <span>@item.Servings</span>
+                        </li>
+                    </ul>
+                    <div class="d-flex flex-wrap mb-2">
+                        @foreach (var recipeTag in item.RecipeTags)
+                        {
+                            <span class="badge bg-secondary me-1 mb-1">@recipeTag.Tag.Name</span>
+                        }
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">View</a>
+                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <form method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" asp-page-handler="Delete" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this recipe?')">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Recipes.Any())
+{
+    <div class="alert alert-info mt-3">
+        No recipes found matching your criteria. Try different search terms or create a new recipe.
+    </div>
+}
