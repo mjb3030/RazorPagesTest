@@ -1,0 +1,92 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container">
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <h1 class="display-4">Welcome to Recipe App</h1>
+            <p class="lead">Find, create, and share your favorite recipes. Our collection includes a variety of dishes for every taste and occasion.</p>
+            <div class="d-grid gap-2 d-md-flex">
+                <a href="/Recipes" class="btn btn-primary btn-lg">Browse Recipes</a>
+                <a href="/Recipes/Create" class="btn btn-outline-primary btn-lg">Add Recipe</a>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex justify-content-center">
+            <div class="p-4 bg-light rounded-3 shadow-sm mt-3 mt-md-0" style="max-width: 400px;">
+                <h2>Recipe Collection</h2>
+                <div class="row text-center my-3">
+                    <div class="col-6">
+                        <div class="h1 mb-0">@Model.RecipeCount</div>
+                        <div class="small text-muted">Recipes</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="h1 mb-0">@Model.CategoryCount</div>
+                        <div class="small text-muted">Categories</div>
+                    </div>
+                </div>
+                
+                @if (Model.LatestRecipe != null)
+                {
+                    <div class="mt-3">
+                        <h5>Latest Recipe</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@Model.LatestRecipe.Name</h5>
+                                <p class="card-text text-truncate">@Model.LatestRecipe.Description</p>
+                                <a asp-page="/Recipes/Details" asp-route-id="@Model.LatestRecipe.Id" class="btn btn-sm btn-outline-primary">View Recipe</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Features</h2>
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-search fs-3 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5>Search by Ingredients</h5>
+                                    <p>Find recipes based on ingredients you have in your kitchen.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-plus-circle fs-3 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5>Add & Edit Recipes</h5>
+                                    <p>Create and customize your own collection of recipes.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-printer fs-3 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5>Print-Friendly Recipes</h5>
+                                    <p>Easily print recipes for use in the kitchen.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
